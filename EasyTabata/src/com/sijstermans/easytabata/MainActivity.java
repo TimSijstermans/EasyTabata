@@ -1,5 +1,6 @@
 package com.sijstermans.easytabata;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -8,9 +9,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
-import android.widget.TextView;
+import android.widget.Spinner;
+import android.widget.TableRow;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
@@ -19,6 +19,11 @@ import com.google.android.gms.ads.AdView;
 public class MainActivity extends ActionBarActivity {
 
 	private AdView adView;
+	private Spinner exercises;
+	private Spinner duration;
+	private Spinner rest;
+	private Spinner rounds;
+	
 	
 	private static final String AD_UNIT_ID = "ca-app-pub-1863889756478321/8692970496";
 	
@@ -35,6 +40,12 @@ public class MainActivity extends ActionBarActivity {
 	@Override
 	protected void onStart(){
 		super.onStart();
+		
+		exercises = (Spinner) findViewById(R.id.spinner1);
+		duration = (Spinner) findViewById(R.id.spinner2);
+		rest = (Spinner) findViewById(R.id.spinner3);
+		rounds = (Spinner) findViewById(R.id.spinner4);
+
 		// Create an ad.
 	    adView = new AdView(this);
 	    adView.setAdSize(AdSize.BANNER);
@@ -42,13 +53,11 @@ public class MainActivity extends ActionBarActivity {
 
 	    // Add the AdView to the view hierarchy. The view will have no size
 	    // until the ad is loaded.
-	    ViewGroup layout = (ViewGroup) findViewById(R.id.mainLayout);
+	    TableRow row = (TableRow) findViewById(R.id.adcontainer);
+	    TableRow.LayoutParams params = new TableRow.LayoutParams();
+	    params.span = 2;
+	    row.addView(adView,0,params);
 	    
-	    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-	    params.addRule(RelativeLayout.BELOW, R.id.exerciseCounter);
-	    adView.setLayoutParams(params);
-	    layout.addView(adView);
-
 	    // Create an ad request. Check logcat output for the hashed device ID to
 	    // get test ads on a physical device.
 	    AdRequest adRequest = new AdRequest.Builder()
@@ -97,17 +106,12 @@ public class MainActivity extends ActionBarActivity {
 		}
 	}
 	
-	private void setupStrings(){
-		TextView txtView = (TextView) findViewById(R.id.counter);
-		txtView.setText("00:00");
-		txtView = (TextView) findViewById(R.id.exerciseCounter);
-		txtView.setText("exercise: 0 / 5");
+	public void nextScreen(View v){
+		Intent i = new Intent(this, SecondScreen.class);
+		i.putExtra("exercises", exercises.getSelectedItemId());
+		i.putExtra("duration", duration.getSelectedItemId());
+		i.putExtra("rest", rest.getSelectedItemId());
+		i.putExtra("rounds", rounds.getSelectedItemId());
+		startActivity(i);
 	}
-	
-	public void startTabata(View v){
-		System.out.println("test");
-
-	}
-	
-	
 }
