@@ -3,6 +3,10 @@
 
     <string name="app_name">Easy Tabata</string>
     <string name="hello_world">Hello world!</string>
+    <string name="exercises">Exercises:</string>
+    <string name="duration">Exercise duration:</string>
+    <string name="interval">Interval duration:</string>
+    <string name="btn_start">Start</string>
     <string name="action_settings">Settings</string>
 
 </resources>
